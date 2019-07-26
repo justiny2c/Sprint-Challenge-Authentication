@@ -34,7 +34,7 @@ describe("routes", () => {
     describe("POST /login", () => {
         it("should return 200 when logging in", () => {
             return request(server)
-                .post("/api/register")
+                .post("/api/login")
                 .send({ username: "testing", password: "password" })
                 .then(res => {
                     expect(res.status).toBe(200)
