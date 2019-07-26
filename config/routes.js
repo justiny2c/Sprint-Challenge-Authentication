@@ -3,7 +3,8 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 // const express = require("express");
 
-const Users = require("./routes-model.js")
+const Users = require("./routes-model.js");
+const secrets = require("./secrets.js")
 
 const { authenticate } = require('../auth/authenticate');
 
@@ -47,6 +48,7 @@ function login(req, res) {
       }
     })
     .catch(error => {
+      console.log(error)
       res.status(500).json(error)
     })
 }
@@ -68,7 +70,7 @@ function getJokes(req, res) {
 
 function generateToken(user) {
   const jwtPayload = {
-    subject: user.id,
+    id: user.id,
     username: user.username,
   };
 
