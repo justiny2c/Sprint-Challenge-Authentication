@@ -44,6 +44,8 @@ Demonstrate your understanding of this week's concepts by answering the followin
 
     Header, Payload, Signature
 
+    <!-- payload, secret, options -->
+
 ## Project Set Up
 
 Follow these steps to set up and work on your project:

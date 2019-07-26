@@ -41,7 +41,7 @@ function login(req, res) {
 
         res.status(200).json({
           message: `Login successful, ${user.username}`,
-          token
+          token //res.body = message, token
         })
       } else {
         res.status(401).json({ message: "Username and Password incorrect" })

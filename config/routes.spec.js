@@ -38,6 +38,7 @@ describe("routes", () => {
                 .send({ username: "testing", password: "password" })
                 .then(res => {
                     expect(res.status).toBe(200)
+                    // expect(res.body.token) 
                 })
         })
     })
