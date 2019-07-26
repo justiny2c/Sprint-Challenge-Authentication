@@ -12,16 +12,17 @@ function find() {
 }
 
 function findBy(username) {
-    return db("users").where(username);
+    return db('users')
+        .where(username)
 }
 
 function add(user) {
     return db('users')
         .insert(user, 'id')
-        .then(ids => {
-            const [id] = ids;
-            return findById(id);
-        });
+        // .then(ids => {
+        //     const [id] = ids;
+        //     return findById(id);
+        // });
 }
 
 function findById(id) {

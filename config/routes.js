@@ -1,6 +1,7 @@
 const axios = require('axios');
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+// const express = require("express");
 
 const Users = require("./routes-model.js")
 
@@ -18,24 +19,13 @@ function register(req, res) {
   const hash = bcrypt.hashSync(user.password, 14);
   user.password = hash
 
-  if (user.username && user.password) {
-    Users.findBy({ username: user.username })
-      .then(foundUser => {
-        if (foundUser) {
-          res.status(409).json({ message: "Username already exists" })
-        } else {
-          Users.add(user)
-            .then(saved => {
-              res.status(201).json(saved)
-            })
-            .catch(err => {
-              res.status(500).json(err)
-            })
-        }
-      })
-  }
-
-
+  Users.add(user)
+    .then(saved => {
+      res.status(201).json(saved)
+    })
+    .catch(err => {
+      res.status(500).json(err)
+    })
 }
 
 function login(req, res) {
@@ -43,20 +33,22 @@ function login(req, res) {
   let { username, password } = req.body
 
   Users.findBy({ username })
+    .first()
     .then(user => {
       if (user && bcrypt.compareSync(password, user.password)) {
+        //produce a token
         const token = generateToken(user)
 
         res.status(200).json({
-          message: "Login successful, token generated",
+          message: `Login successful, ${user.username}`,
           token
         })
       } else {
-        res.status(401).json({ message: "Username/Password incorrect"})
+        res.status(401).json({ message: "Username and Password incorrect" })
       }
     })
-    .catch(err => {
-      res.status(500),json(err)
+    .catch(error => {
+      res.status(500).json(error)
     })
 }
 
@@ -77,12 +69,12 @@ function getJokes(req, res) {
 
 function generateToken(user) {
   const jwtPayload = {
-      subject: user.id,
-      username: user.username,
-    };
-  
-    const jwtOptions = {
-      expiresIn: '1d',
-    };
-    return jwt.sign(jwtPayload, secrets.jwtSecret, jwtOptions);
+    subject: user.id,
+    username: user.username,
+  };
+
+  const jwtOptions = {
+    expiresIn: '1d',
+  };
+  return jwt.sign(jwtPayload, secrets.jwtSecret, jwtOptions);
 }
