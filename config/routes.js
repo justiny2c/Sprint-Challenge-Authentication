@@ -29,14 +29,13 @@ function register(req, res) {
 }
 
 function login(req, res) {
-  // implement user login
   let { username, password } = req.body
 
   Users.findBy({ username })
-    .first()
     .then(user => {
+      console.log(user)
       if (user && bcrypt.compareSync(password, user.password)) {
-        //produce a token
+
         const token = generateToken(user)
 
         res.status(200).json({
